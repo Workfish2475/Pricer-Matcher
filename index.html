@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome to Pricer Matcher</title>
+</head>
+
+<header>
+    <!-- add a nav bar that allows switching between search and cart -->
+</header>
+
+<body>
+    <h1 id="welcome-message">Welcome!</h1>
+    <br>
+    <p id="sku-prompt">Please enter a product SKU:</p>
+    <br>
+    <form id="sku-field">
+        <label for="sku">SKU:</label><br>
+        <input type="text" id="sku-input" name="sku"><br>
+        <button type="submit" id="submit-button">Submit</button>
+    </form>
+
+    <div id="results"></div>
+
+    <script>
+        document.getElementById('sku-field').addEventListener('submit', function(event) {
+            event.preventDefault(); // stop default form submission
+
+            const sku = document.getElementById('sku-input').value;
+        });
+    </script>
+
+</body>
+</html>

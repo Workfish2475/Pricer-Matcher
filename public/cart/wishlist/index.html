@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Wishlist</title>
+  <link rel="stylesheet" href="../style.css">
+</head>
+<body>
+  <h1>Your Wishlist</h1>
+  <div id="wishlist-items"></div>
+  <script>
+    fetch('/wishlist/items')
+      .then((response) => response.json())
+      .then((items) => {
+        const wishlistDiv = document.getElementById('wishlist-items');
+
+        if (items.length === 0) {
+          wishlistDiv.textContent = 'Your wishlist is empty.';
+        } else {
+          items.forEach((item) => {
+            const itemDiv = document.createElement('div');
+            itemDiv.className = 'product';
+
+            const itemName = document.createElement('h2');
+            itemName.textContent = item.name;
+
+            const itemPrice = document.createElement('p');
+            itemPrice.textContent = `Price: $${item.price}`;
+
+            itemDiv.appendChild(itemName);
+            itemDiv.appendChild(itemPrice);
+
+            wishlistDiv.appendChild(itemDiv);
+          });
+        }
+      });
+  </script>
+</body>
+</html>

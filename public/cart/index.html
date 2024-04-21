@@ -6,6 +6,9 @@
   <link rel="stylesheet" href="../style.css">
 </head>
 <body>
+  <!-- placeholder links -->
+  <a href="../index.html">Home</a>
+  
   <h1>Your Cart</h1>
   <div id="cart-items"></div>
   <script>
@@ -27,13 +30,33 @@
             const itemPrice = document.createElement('p');
             itemPrice.textContent = `Price: $${item.price}`;
 
+            const deleteButton = document.createElement('button');
+            deleteButton.textContent = 'Remove';
+            deleteButton.onclick = () => deleteItemFromCart(item._id);
+
             itemDiv.appendChild(itemName);
             itemDiv.appendChild(itemPrice);
+            itemDiv.appendChild(deleteButton);
 
             cartDiv.appendChild(itemDiv);
           });
         }
       });
+
+    function deleteItemFromCart(itemId) {
+      fetch(`/cart/delete/${itemId}`, {
+        method: 'DELETE'
+      })
+      .then(response => response.json())
+      .then(data => {
+        alert(data.message); // notify user
+        location.reload(); // reload page to update item list
+      })
+      .catch(error => {
+        console.error('Failed to delete item:', error);
+        alert('Failed to remove item');
+      });
+    }
   </script>
 </body>
 </html>

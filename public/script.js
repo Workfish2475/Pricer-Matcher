@@ -54,19 +54,37 @@ function displayProducts(productList) {
 //adding products to the cart
 function addToCart(product) {
   fetch('/cart/add', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(product),
-  }).then(() => console.log(`Added ${product.name} to cart`));
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(product),
+  })
+  .then(response => response.text())  // assume response is a text message
+  .then(message => {
+      console.log(message);
+      alert(message);  // display browser alert dialog to inform user
+  })
+  .catch(error => {
+      console.error('error:', error);
+      alert(`failed to add ${product.name} to cart`);
+  });
 }
 
 //adding products to the wishlist
 function addToWishlist(product) {
   fetch('/wishlist/add', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(product),
-  }).then(() => console.log(`Added ${product.name} to wishlist`));
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(product),
+  })
+  .then(response => response.text())
+  .then(message => {
+      console.log(message);
+      alert(message);
+  })
+  .catch(error => {
+      console.error('error:', error);
+      alert(`failed to add ${product.name} to wishlist`);
+  });
 }
 
 //product search

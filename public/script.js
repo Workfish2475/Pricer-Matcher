@@ -34,12 +34,12 @@ function displayProducts(productList) {
 
     const addToCartButton = document.createElement('button');
     addToCartButton.className = 'add-to-cart';
-    addToCartButton.textContent = 'Add to Cart';
+    addToCartButton.innerHTML = '<i class="fa-solid fa-cart-shopping"></i> Add to Cart';
     addToCartButton.onclick = () => addToCart(product);
 
     const addToWishlistButton = document.createElement('button');
     addToWishlistButton.className = 'add-to-wishlist';
-    addToWishlistButton.textContent = 'Add to Wishlist';
+    addToWishlistButton.innerHTML = '<i class="fa-solid fa-heart"></i> Add to Wishlist';
     addToWishlistButton.onclick = () => addToWishlist(product);
 
     productDiv.appendChild(productName);
@@ -99,5 +99,6 @@ function searchProducts() {
   displayProducts(filteredProducts);
 }
 
-document.getElementById('search-button').addEventListener('click', searchProducts);
+//document.getElementById('search-button').addEventListener('click', searchProducts);
+document.getElementById('search-bar').addEventListener('input', searchProducts);
 window.onload = () => displayProducts(products);

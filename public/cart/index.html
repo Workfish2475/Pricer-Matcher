@@ -4,10 +4,14 @@
   <meta charset="UTF-8">
   <title>Cart</title>
   <link rel="stylesheet" href="../style.css">
+  <script src="https://kit.fontawesome.com/90411e327c.js" crossorigin="anonymous"></script>
 </head>
 <body>
-  <!-- placeholder links -->
-  <a href="../index.html">Home</a>
+
+  <!--Added sections for better management in CSS (Placeholder links)-->
+  <section class="nav-links">
+    <a href="../index.html"><i class="fa-solid fa-house"></i> Home</a>
+  </section>
   
   <h1>Your Cart</h1>
   <div id="cart-items"></div>
@@ -18,7 +22,20 @@
         const cartDiv = document.getElementById('cart-items');
 
         if (items.length === 0) {
-          cartDiv.textContent = 'Your cart is empty.';
+          cartDiv.textContent = 'Your cart is empty';
+
+          const cartStyle = cartDiv.style;
+          
+          cartStyle.textAlign = 'center';
+          cartStyle.position = 'fixed';
+          cartStyle.top = '50%';
+          cartStyle.left = '50%';
+          cartStyle.transform = 'translate(-50%, -50%)';
+          cartStyle.textAlign = 'center';
+          cartStyle.backgroundColor = '#f0f0f0';
+          cartStyle.padding = '20px';
+          cartStyle.borderRadius = '5px';
+
         } else {
           items.forEach((item) => {
             const itemDiv = document.createElement('div');
@@ -32,6 +49,7 @@
 
             const deleteButton = document.createElement('button');
             deleteButton.textContent = 'Remove';
+            deleteButton.className = 'remove-button';
             deleteButton.onclick = () => deleteItemFromCart(item._id);
 
             itemDiv.appendChild(itemName);

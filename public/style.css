@@ -3,13 +3,15 @@ body {
   }
   
   h1 {
-    color: darkblue;
+    color: rgb(0, 0, 0);
+    text-align: center;
   }
   
   .product {
     border: 1px solid #ccc;
     padding: 10px;
     margin: 10px;
+    border-radius: 2px;
   }
   
   .product h2 {
@@ -31,4 +33,57 @@ body {
   .add-to-cart:hover {
     background-color: darkgreen;
   }
-  
+
+  .add-to-wishlist {
+    background-color:rgb(55, 135, 255);
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+  }
+    
+  .add-to-wishlist:hover {
+    background-color: rgb(43, 102, 190);
+  }
+
+  .remove-button {
+    background-color:rgb(255, 55, 55);
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+  }
+    
+  .remove-button:hover {
+    background-color: rgb(209, 42, 42);
+  }
+
+  .nav-items {
+    margin: 10px;
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+  }
+
+  .nav-links {
+    display: flex;
+  }
+
+  .nav-links a {
+    align-content: center;
+    text-decoration: none;
+    background-color: black;
+    color: white;
+    padding: 5px 10px;
+    margin: 2px;
+  }
+
+  .nav-input input, .nav-input input::placeholder {
+    text-indent: 4%;
+    color: black;
+    background-color: #ccc;
+    border: none;
+    border-radius: 2px;
+    box-shadow: 2px 1px 2px #ccc;
+    height: 100%;
+  }

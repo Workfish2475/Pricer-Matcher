@@ -4,17 +4,22 @@
   <meta charset="UTF-8">
   <title>Simple Shopping Website</title>
   <link rel="stylesheet" href="style.css">
+  <script src="https://kit.fontawesome.com/90411e327c.js" crossorigin="anonymous"></script>
 </head>
 <body>
-  <h1>Welcome to the Shopping Website</h1>
+  <h1>Pricer Matcher</h1>
   
-  <br><a href="cart/index.html">Cart</a>
-  <br><a href="cart/wishlist/index.html">Wishlist</a>
-  
-  <div>
-    <input type="text" id="search-bar" placeholder="Search for products">
-    <button id="search-button">Search</button>
-  </div>
+  <!--Added sections for better management in CSS-->
+  <section class="nav-items">
+    <section class="nav-links">
+      <br><a href="cart/wishlist/index.html"><i class="fa-solid fa-heart"></i> Wishlist</a>
+      <br><a href="cart/index.html"><i class="fa-solid fa-cart-shopping"></i> Cart</a>
+    </section>
+
+    <section class="nav-input">
+      <input type="text" id="search-bar" placeholder="Search...">
+    </section>
+  </section>
   
   <div id="product-list"></div>
 

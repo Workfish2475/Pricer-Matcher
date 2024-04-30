@@ -3,13 +3,17 @@
 <head>
   <meta charset="UTF-8">
   <title>Wishlist</title>
-  <link rel="stylesheet" href="../style.css">
+  <link rel="stylesheet" href="../../style.css">
+  <script src="https://kit.fontawesome.com/90411e327c.js" crossorigin="anonymous"></script>
 </head>
 <body>
-  <!-- placeholder links -->
-  <a href="../../index.html">Home</a>
-  <br>
-  <a href="../index.html">Cart</a>
+  
+  <!--Added sections for better management in CSS (Placeholder links)-->
+  <section class="nav-links">
+    <a href="../../index.html"><i class="fa-solid fa-house"></i> Home</a>
+    <br>
+    <a href="../index.html"><i class="fa-solid fa-cart-shopping"></i> Cart</a>
+  </section>
 
   <h1>Your Wishlist</h1>
   <div id="wishlist-items"></div>
@@ -21,6 +25,19 @@
 
         if (items.length === 0) {
           wishlistDiv.textContent = 'Your wishlist is empty.';
+
+          const wishStyle = wishlistDiv.style;
+          
+          wishStyle.textAlign = 'center';
+          wishStyle.position = 'fixed';
+          wishStyle.top = '50%';
+          wishStyle.left = '50%';
+          wishStyle.transform = 'translate(-50%, -50%)';
+          wishStyle.textAlign = 'center';
+          wishStyle.backgroundColor = '#f0f0f0';
+          wishStyle.padding = '20px';
+          wishStyle.borderRadius = '5px';
+
         } else {
           items.forEach((item) => {
             const itemDiv = document.createElement('div');
@@ -34,6 +51,7 @@
 
             const deleteButton = document.createElement('button');
             deleteButton.textContent = 'Remove';
+            deleteButton.className = 'remove-button';
             deleteButton.onclick = () => deleteItemFromWishlist(item._id);
 
             itemDiv.appendChild(itemName);

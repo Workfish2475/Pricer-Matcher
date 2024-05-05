@@ -8,6 +8,7 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 const uri = process.env.MONGO_URI; // mongo connection string from .env
 const client = new MongoClient(uri);
+module.exports = client;
 
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(bodyParser.json());
@@ -22,6 +23,18 @@ client.connect()
           req.dbClient = client; // assume connection is maintained
           next();
         }
+        
+        app.get('/products', async (req, res) => {
+            try {
+              await client.connect();
+              const collection = client.db("PricerMatcher").collection("items");
+              const products = await collection.find({}).toArray();
+              res.json(products);
+            } catch (error) {
+              console.error('Error:', error);
+              res.status(500).send('An error occurred');
+            }
+          });
       
 
         app.get('/', (req, res) => {
@@ -36,18 +49,19 @@ client.connect()
             res.sendFile(path.join(__dirname, 'public', 'wishlist', 'index.html'));
         });
 
-        app.post('/cart/add', dbConnect, async (req, res) => {
-            const item = req.body;
-            try {
-                const db = req.dbClient.db("PricerMatcher");
-                const collection = db.collection("cart");
-                await collection.insertOne(item);
-                res.status(200).send('Item added to cart');
-            } catch (error) {
-                console.error("error adding to cart", error);
-                res.status(500).send("error adding item to cart");
-            }
-        });
+    app.post('/cart/add', dbConnect, async (req, res) => {
+        const item = { ...req.body, _id: undefined };
+        try {
+            const db = req.dbClient.db("PricerMatcher");
+            const collection = db.collection("cart");
+            await collection.insertOne(item);
+
+            res.status(200).send('Item added to cart');
+        } catch (error) {
+            console.error("error adding to cart", error);
+            res.status(500).send("error adding item to cart");
+        }
+    });
 
         app.get('/cart/items', dbConnect, async (req, res) => {
             try {
@@ -62,11 +76,12 @@ client.connect()
         });
 
         app.post('/wishlist/add', dbConnect, async (req, res) => {
-            const item = req.body;
+            const item = { ...req.body, _id: undefined };
             try {
                 const db = req.dbClient.db("PricerMatcher");
                 const collection = db.collection("wishlist");
                 await collection.insertOne(item);
+
                 res.status(200).send('Item added to wishlist');
             } catch (error) {
                 console.error("error adding to wishlist", error);
@@ -119,6 +134,20 @@ client.connect()
         });
 
 
+        app.get('/search', async (req, res) => {              
+
+            try {
+                const db = req.dbClient.db("PricerMatcher");
+                const collection = db.collection("items");
+                // Assuming 'name' is the field you want to search, adjust this if necessary
+                const query = { item: req.query.q.toLowerCase() }; // assuming 'name' is the field you want to ; // Case-insensitive regex search
+                const results = await collection.find(query).toArray();
+                res.json(results); 
+            } catch (error) {
+                console.error('Error searching for items:', error);
+                res.status(500).json({ message: 'An error occurred during search' });
+            }
+        });
 
         // start server
         app.listen(PORT, () => {

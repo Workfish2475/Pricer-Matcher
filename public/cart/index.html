@@ -42,24 +42,28 @@
             itemDiv.className = 'product';
 
             const itemName = document.createElement('h2');
-            itemName.textContent = item.name;
+            itemName.textContent = item.item; 
 
             const itemPrice = document.createElement('p');
+            
             itemPrice.textContent = `Price: $${item.price}`;
 
             const deleteButton = document.createElement('button');
             deleteButton.textContent = 'Remove';
             deleteButton.className = 'remove-button';
             deleteButton.onclick = () => deleteItemFromCart(item._id);
-
+            const itemRetailer = document.createElement('p');
+            itemRetailer.textContent = `Retailer: ${item.retailer}`;
+            
             itemDiv.appendChild(itemName);
+            itemDiv.appendChild(itemRetailer);
             itemDiv.appendChild(itemPrice);
             itemDiv.appendChild(deleteButton);
-
             cartDiv.appendChild(itemDiv);
           });
         }
       });
+
 
     function deleteItemFromCart(itemId) {
       fetch(`/cart/delete/${itemId}`, {
@@ -70,10 +74,12 @@
         alert(data.message); // notify user
         location.reload(); // reload page to update item list
       })
+      
       .catch(error => {
         console.error('Failed to delete item:', error);
         alert('Failed to remove item');
       });
+      
     }
   </script>
 </body>

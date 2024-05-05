@@ -44,7 +44,7 @@
             itemDiv.className = 'product';
 
             const itemName = document.createElement('h2');
-            itemName.textContent = item.name;
+            itemName.textContent = item.item;
 
             const itemPrice = document.createElement('p');
             itemPrice.textContent = `Price: $${item.price}`;
@@ -54,14 +54,20 @@
             deleteButton.className = 'remove-button';
             deleteButton.onclick = () => deleteItemFromWishlist(item._id);
 
+            const itemRetailer = document.createElement('p');
+            itemRetailer.textContent = `Retailer: ${item.retailer}`;
+
             itemDiv.appendChild(itemName);
+            itemDiv.appendChild(itemRetailer)
             itemDiv.appendChild(itemPrice);
             itemDiv.appendChild(deleteButton);
+            
 
             wishlistDiv.appendChild(itemDiv);
           });
         }
       });
+
 
     function deleteItemFromWishlist(itemId) {
       fetch(`/wishlist/delete/${itemId}`, {

@@ -1,24 +1,8 @@
-// Samples
-const products = [
-  {
-    id: 1,
-    name: 'Product 1',
-    price: 19.99,
-  },
-  {
-    id: 2,
-    name: 'Product 2',
-    price: 29.99,
-  },
-  {
-    id: 3,
-    name: 'Product 3',
-    price: 39.99,
-  },
-];
-
 //display products on the webpage
+
+
 function displayProducts(productList) {
+  console.log(productList)
   const productListDiv = document.getElementById('product-list');
   productListDiv.innerHTML = ''; 
 
@@ -27,7 +11,7 @@ function displayProducts(productList) {
     productDiv.className = 'product';
 
     const productName = document.createElement('h2');
-    productName.textContent = product.name;
+    productName.textContent = product.item;
 
     const productPrice = document.createElement('p');
     productPrice.textContent = `Price: $${product.price.toFixed(2)}`;
@@ -42,13 +26,31 @@ function displayProducts(productList) {
     addToWishlistButton.innerHTML = '<i class="fa-solid fa-heart"></i> Add to Wishlist';
     addToWishlistButton.onclick = () => addToWishlist(product);
 
+    const productRetailer = document.createElement('p');
+    productRetailer.textContent = `Retailer: ${product.retailer}`;
+
     productDiv.appendChild(productName);
+    productDiv.appendChild(productRetailer);
     productDiv.appendChild(productPrice);
     productDiv.appendChild(addToCartButton);
     productDiv.appendChild(addToWishlistButton);
 
     productListDiv.appendChild(productDiv);
+    
   });
+}
+
+// Function to display a notification message
+function displayNotification(message) {
+  const notification = document.createElement('div');
+  notification.className = 'notification';
+  notification.textContent = message;
+  document.body.appendChild(notification);
+
+  // Automatically remove the notification after a certain duration
+  setTimeout(() => {
+    document.body.removeChild(notification);
+  }, 3000); // Adjust the duration as needed (in milliseconds)
 }
 
 //adding products to the cart
@@ -61,7 +63,7 @@ function addToCart(product) {
   .then(response => response.text())  // assume response is a text message
   .then(message => {
       console.log(message);
-      alert(message);  // display browser alert dialog to inform user
+      displayNotification(message);
   })
   .catch(error => {
       console.error('error:', error);
@@ -79,7 +81,7 @@ function addToWishlist(product) {
   .then(response => response.text())
   .then(message => {
       console.log(message);
-      alert(message);
+      displayNotification(message)
   })
   .catch(error => {
       console.error('error:', error);
@@ -87,18 +89,30 @@ function addToWishlist(product) {
   });
 }
 
-//product search
-function searchProducts() {
-  const searchBar = document.getElementById('search-bar');
-  const query = searchBar.value.toLowerCase();
+const searchProducts = async () => {
+  try {
+    const searchBar = document.getElementById('search-bar');
+    const query = searchBar.value.toLowerCase();
+    const response = await fetch(`/search?q=${query}`);
+    const results = await response.json();
+    
+    const productListDiv = document.getElementById('product-list');
+    productListDiv.innerHTML = ''; // Clear existing items before displaying search results
 
-  const filteredProducts = products.filter((product) =>
-    product.name.toLowerCase().includes(query)
-  );
 
-  displayProducts(filteredProducts);
+    displayProducts(results);
+
+  } catch (error) {
+    console.error('Error searching for products:', error);
+    alert('An error occurred while searching for products. Please try again later.');
 }
+};
+
 
 //document.getElementById('search-button').addEventListener('click', searchProducts);
 document.getElementById('search-bar').addEventListener('input', searchProducts);
-window.onload = () => displayProducts(products);
+window.onload = async () => {
+  const response = await fetch('/products'); 
+  const products = await response.json();
+  displayProducts(products);
+};

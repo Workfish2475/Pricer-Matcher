@@ -134,18 +134,21 @@ client.connect()
         });
 
 
-        app.get('/search', async (req, res) => {              
-
+        app.get('/search', dbConnect, async (req, res) => {    
             try {
+                const itemName = req.query.itemName;
+
+                console.log(req.query.itemName);
+
                 const db = req.dbClient.db("PricerMatcher");
                 const collection = db.collection("items");
-                // Assuming 'name' is the field you want to search, adjust this if necessary
-                const query = { item: req.query.q.toLowerCase() }; // assuming 'name' is the field you want to ; // Case-insensitive regex search
-                const results = await collection.find(query).toArray();
-                res.json(results); 
+
+                const results = await collection.find({item: {$regex: itemName, $options: 'i'}}).toArray();
+
+                res.json(results);
             } catch (error) {
-                console.error('Error searching for items:', error);
-                res.status(500).json({ message: 'An error occurred during search' });
+                console.error('Error:', error);
+                res.status(500).json({ message: 'An error occurred' });
             }
         });
 

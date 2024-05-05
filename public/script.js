@@ -2,7 +2,7 @@
 
 
 function displayProducts(productList) {
-  console.log(productList)
+
   const productListDiv = document.getElementById('product-list');
   productListDiv.innerHTML = ''; 
 
@@ -90,23 +90,35 @@ function addToWishlist(product) {
 }
 
 const searchProducts = async () => {
-  try {
-    const searchBar = document.getElementById('search-bar');
-    const query = searchBar.value.toLowerCase();
-    const response = await fetch(`/search?q=${query}`);
-    const results = await response.json();
-    
-    const productListDiv = document.getElementById('product-list');
-    productListDiv.innerHTML = ''; // Clear existing items before displaying search results
+  const searchBar = document.getElementById('search-bar');
+  const query = encodeURIComponent(searchBar.value.trim()); 
 
+  const productListDiv = document.getElementById('product-list');
+  productListDiv.innerHTML = '';
 
-    displayProducts(results);
+  fetch(`/search?itemName=${encodeURIComponent(query)}`)
 
-  } catch (error) {
-    console.error('Error searching for products:', error);
-    alert('An error occurred while searching for products. Please try again later.');
-}
+  .then(response => {
+      if (!response.ok) {
+          throw new Error('Network response was not ok');
+      }
+      return response.json();
+  })
+
+  .then(data => {
+      if (data) {
+          displayProducts(data);
+      } else {
+          alert('No data found');
+      }
+  })
+
+  .catch(error => {
+      console.error("Error: ", error);
+      alert('Failed to fetch data: ' + error.message);
+  });
 };
+
 
 
 //document.getElementById('search-button').addEventListener('click', searchProducts);
